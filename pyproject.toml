@@ -1,0 +1,13 @@
+[project]
+name = "bm25"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bottleneck>=1.6.0",
+    "nltk>=3.9.2",
+    "numba>=0.62.1",
+    "numpy>=2.3.5",
+    "scipy>=1.16.3",
+]
