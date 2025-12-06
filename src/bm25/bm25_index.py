@@ -225,8 +225,8 @@ class Bm25Index:
             # token_counts = Counter(tokens)
 
         tokens = [token for token in set(full_tokens) if token in self.inverted_vocabulary]
-        if len(tokens) < len(full_tokens):
-            print("[BM25 search] Query had {len(full_tokens) - len(tokens)} non-vocab words")
+        if len(tokens) < len(full_tokens) and verbose:
+            print(f"[BM25 search] Query had {len(full_tokens) - len(tokens)}/{len(full_tokens)} non-vocab words")
 
         if weight_by_frequency:
             multipliers = [token_counts[token] for token in tokens]
