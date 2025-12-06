@@ -204,6 +204,13 @@ class Bm25Index:
         for query in query_batch:
             rankings.append(self.search(query, k, verbose))
         return rankings
+    @property
+    def inverted_vocabulary_ext(self):
+        return self.inverted_vocabulary
+
+    @inverted_vocabulary_ext.setter
+    def inverted_vocabulary_ext(self, inv):
+        self.inverted_vocabulary = inv
 
     def search(
         self,
@@ -212,12 +219,14 @@ class Bm25Index:
         weight_by_frequency: bool = False,
         verbose: bool = False,
     ):
-        tokens = Bm25Index.preprocess(query, Bm25Index.stopwords)
+        full_tokens = Bm25Index.preprocess(query, Bm25Index.stopwords)
         if weight_by_frequency:
             raise NotImplementedError("Need to re-implement weight-by-frequency")
             # token_counts = Counter(tokens)
 
-        tokens = [token for token in set(tokens) if token in self.inverted_vocabulary]
+        tokens = [token for token in set(full_tokens) if token in self.inverted_vocabulary]
+        if len(tokens) < len(full_tokens):
+            print("[BM25 search] Query had {len(full_tokens) - len(tokens)} non-vocab words")
 
         if weight_by_frequency:
             multipliers = [token_counts[token] for token in tokens]
